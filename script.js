@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage.textContent = '';
         
         // Show loading state
-        displayError('Loading...');
+        displayError('Loading');
         
         // Fetch country data
         fetchCountryData(countryName);
