@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Clear previous results and errors
+        countryInfo.innerHTML = '';
+        borderingCountries.innerHTML = '';
         countryInfo.style.display = 'none';
         borderingCountries.style.display = 'none';
         errorMessage.textContent = '';
