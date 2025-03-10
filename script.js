@@ -20,7 +20,7 @@ function updateCountryInfo(country) {
 
     if (country.borders) {
         country.borders.forEach(border => {
-            fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+            fetch(`https://restcountries.com/${border}`)
                 .then(response => response.json())
                 .then(data => {
                     const borderCountry = data[0];
