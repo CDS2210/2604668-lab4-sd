@@ -54,45 +54,75 @@ function clearCountryInfo() {
 function updateCountryInfo(country) {
     // Clear any previous error message
     document.getElementById('error-message').textContent = '';
+    
     // Update the country information
     document.getElementById('capital').textContent = country.capital ? country.capital[0] : 'N/A';
     document.getElementById('population').textContent = country.population ? country.population.toLocaleString() : 'N/A';
-    document.getElementById('region').textContent = country.region;
+    document.getElementById('region').textContent = country.region || 'N/A';
+    
     // Set the flag, check if it exists
     const flagElement = document.getElementById('flag');
     if (country.flags && country.flags.png) {
         flagElement.src = country.flags.png;
         flagElement.alt = `${country.name.common} flag`;
     } else {
-        flagElement.src = '';  // Fallback or empty image
+        flagElement.src = '';
         flagElement.alt = "Flag not available";
     }
+    
     // Update the bordering countries
     const bordersList = document.getElementById('borders-list');
-    bordersList.innerHTML = ''; // Clear the previous list
+    // Clear the previous list
+    while (bordersList.firstChild) {
+        bordersList.removeChild(bordersList.firstChild);
+    }
+    
     if (country.borders && country.borders.length > 0) {
+        // Create a counter to track when all borders are loaded
+        let loadedBorders = 0;
+        const totalBorders = country.borders.length;
+        
         country.borders.forEach(border => {
             fetch(`https://restcountries.com/v3.1/alpha/${border}`)
-                .then(response => response.json())
-                .then(data => {
-                    const borderCountry = data[0];
-                    const li = document.createElement('li');
-                    const img = document.createElement('img');
-                    if (borderCountry.flags && borderCountry.flags.png) {
-                        img.src = borderCountry.flags.png;
-                        img.alt = `${borderCountry.name.common} flag`;
-                        li.appendChild(img);
-                        li.appendChild(document.createTextNode(` ${borderCountry.name.common}`));
-                    } else {
-                        li.textContent = `${borderCountry.name.common} (Flag not available)`;
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Border country not found');
                     }
-                    bordersList.appendChild(li);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const borderCountry = data[0];
+                        const li = document.createElement('li');
+                        
+                        if (borderCountry.flags && borderCountry.flags.png) {
+                            const img = document.createElement('img');
+                            img.src = borderCountry.flags.png;
+                            img.alt = `${borderCountry.name.common} flag`;
+                            li.appendChild(img);
+                            li.appendChild(document.createTextNode(` ${borderCountry.name.common}`));
+                        } else {
+                            li.textContent = `${borderCountry.name.common} (Flag not available)`;
+                        }
+                        
+                        bordersList.appendChild(li);
+                    }
                 })
                 .catch(error => {
                     console.error("Error fetching border country data:", error);
                     const li = document.createElement('li');
-                    li.textContent = "Error fetching border country data";
+                    li.textContent = `Error fetching border country: ${border}`;
                     bordersList.appendChild(li);
+                })
+                .finally(() => {
+                    loadedBorders++;
+                    // If all borders have been processed and none loaded successfully,
+                    // show a message
+                    if (loadedBorders === totalBorders && bordersList.children.length === 0) {
+                        const li = document.createElement('li');
+                        li.textContent = 'Error loading bordering countries.';
+                        bordersList.appendChild(li);
+                    }
                 });
         });
     } else {
