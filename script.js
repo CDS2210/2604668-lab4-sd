@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Validate input
         if (countryName === '') {
-            displayError('Please enter a country name');
+            displayError('No country name entered');
             return;
         }
         
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const region = country.region;
         const flagUrl = country.flags.png;
         
-        // Build HTML for country info using semantic HTML instead of divs
+
         countryInfo.innerHTML = `
             <header class="country-header">
                 <img class="country-flag" src="${flagUrl}" alt="${name} flag">
