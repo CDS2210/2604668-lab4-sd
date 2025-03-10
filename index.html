@@ -4,49 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Information</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Country Information</h1>
-    
-    
-    <div>
-        <label for="country-name">Enter Country Name: </label>
-        <input type="text" id="country-name" placeholder="Enter country name">
-        <button id="submit-button">Submit</button>
-    </div>
-    
+    <input type="text" id="country-name" placeholder="Enter name of Country" />
+    <button id="fetch-country">Get Country Info</button>
     <section id="country-info">
         <h2>Country Information</h2>
-      
+        <p><strong>Capital:</strong> <p id="capital"></p></p>
+        <p><strong>Population:</strong> <p id="population"></p></p>
+        <p><strong>Region:</strong> <p id="region"></p></p>
+        <p><strong>Flag:</strong> <img id="flag" alt="Country Flag" />
     </section>
-
-
     <section id="bordering-countries">
-        <h2>Bordering Countries</h2>
-        <ul>
-
-        </ul>
+        <h3>Bordering Countries:</h3>
+        <ul id="borders-list"></ul>
     </section>
-
-    <script>
-        document.getElementById('submit-button').addEventListener('click', function() {
-            const countryName = document.getElementById('country-name').value.trim();
-            if (countryName) {
-
-                document.getElementById('country-info').innerHTML = `<p>Information for ${countryName} will be displayed here.</p>`;
-                
-                countries
-                document.getElementById('bordering-countries').innerHTML = `
-                    <h2>Bordering Countries</h2>
-                    <ul>
-                        <li>Country 1 <img src="flag_url_1" alt="Flag 1"></li>
-                        <li>Country 2 <img src="flag_url_2" alt="Flag 2"></li>
-                        <!-- More countries here -->
-                    </ul>
-                `;
-            }
-        });
-    </script>
+    <p id="error-message" class="error"></p>
+    <script src="script.js"></script>
 </body>
 </html>
 
