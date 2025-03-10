@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Information</title>
+    <title>REST Countries Explorer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Country Information</h1>
-    <input type="text" id="country-name" placeholder="Please enter name of Country" />
-    <button id="fetch-country">Get Country Info</button>
-    <section id="country-info">
-        <h2>Country Information</h2>
-        <p><strong>Capital:</strong> <p id="capital"></p></p>
-        <p><strong>Population:</strong> <p id="population"></p></p>
-        <p><strong>Region:</strong> <p id="region"></p></p>
-        <p><strong>Flag:</strong> <img id="flag" alt="Country Flag" />
-    </section>
-    <section id="bordering-countries">
-        <h3>Bordering Countries:</h3>
-        <ul id="borders-list"></ul>
-    </section>
-    <p id="error-message" class="error"></p>
+    <main class="container">
+        <h1>Country Information Explorer</h1>
+        
+        <form class="search-container">
+            <input type="text" id="country-input" placeholder="Enter a country name...">
+            <button type="button" id="search-btn">Search</button>
+        </form>
+        
+        <p id="error-message"></p>
+        
+        <section id="country-info">
+            <!-- Country information will be displayed here -->
+        </section>
+        
+        <section id="bordering-countries">
+            <!-- Bordering countries will be displayed here -->
+        </section>
+    </main>
+    
     <script src="script.js"></script>
 </body>
 </html>
