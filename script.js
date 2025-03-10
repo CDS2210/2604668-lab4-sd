@@ -1,39 +1,22 @@
-document.getElementById('fetch-country').addEventListener('click', function() {
-    const countryName = document.getElementById('country-name').value.trim();
-    
-    if (countryName == "") {
-        showError("Please enter a country name.");
-        return;
-    }
-
-    const CountrySite = `https://restcountries.com/v3.1/name/${countryName}?fullText=true`;
-
-    fetch(CountrySite)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Country not found');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const country = data[0];
-            updateCountryInfo(country);
-        })
-        .catch(error => {
-            showError(error.message);
-        });
-});
-
 function updateCountryInfo(country) {
+    // Clear any previous error message
     document.getElementById('error-message').textContent = '';
+    
+    // Update the country information
     document.getElementById('capital').textContent = country.capital ? country.capital[0] : 'N/A';
     document.getElementById('population').textContent = country.population.toLocaleString();
     document.getElementById('region').textContent = country.region;
-    document.getElementById('flag').src = country.flags[1];
-    
 
+    // Set the flag, check if it exists
+    if (country.flags && country.flags.png) {
+        document.getElementById('flag').src = country.flags.png;
+    } else {
+        document.getElementById('flag').alt = "Flag not available";
+    }
+
+    // Update the bordering countries
     const bordersList = document.getElementById('borders-list');
-    bordersList.innerHTML = ''; 
+    bordersList.innerHTML = ''; // Clear the previous list
 
     if (country.borders) {
         country.borders.forEach(border => {
@@ -42,17 +25,17 @@ function updateCountryInfo(country) {
                 .then(data => {
                     const borderCountry = data[0];
                     const li = document.createElement('li');
-                    li.innerHTML = `<img src="${borderCountry.flags[1]}" alt="${borderCountry.name.common} flag" /> ${borderCountry.name.common}`;
+                    if (borderCountry.flags && borderCountry.flags.png) {
+                        li.innerHTML = `<img src="${borderCountry.flags.png}" alt="${borderCountry.name.common} flag" /> ${borderCountry.name.common}`;
+                    } else {
+                        li.innerHTML = `${borderCountry.name.common} (Flag not available)`;
+                    }
                     bordersList.appendChild(li);
                 });
         });
     } else {
         bordersList.innerHTML = '<li>No bordering countries.</li>';
     }
-}
-
-function showError(message) {
-    document.getElementById('error-message').textContent = message;
 }
 
 
